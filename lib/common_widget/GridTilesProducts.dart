@@ -1,3 +1,5 @@
+// @dart=2.11.0
+
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_app/screens/ProductDetailScreen.dart';

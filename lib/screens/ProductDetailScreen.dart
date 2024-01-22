@@ -7,12 +7,10 @@ import 'package:flutter_ecommerce_app/models/ProductDetails.dart';
 import 'package:flutter_ecommerce_app/utils/Urls.dart';
 import 'package:http/http.dart';
 
-ProductDetails productDetails;
-
 class ProductDetailScreen extends StatefulWidget {
   String slug;
 
-  ProductDetailScreen({Key key, @required this.slug}) : super(key: key);
+  ProductDetailScreen(Key key, @required this.slug) : super(key: key);
 
   @override
   _ProductDetailScreenState createState() => _ProductDetailScreenState();
@@ -59,7 +57,7 @@ class BottomNavBar extends StatelessWidget {
             color: Color(0xFF5e5e5e),
           ),
           Spacer(),
-          RaisedButton(
+          FloatingActionButton(
             elevation: 0,
             shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.only(
@@ -67,8 +65,6 @@ class BottomNavBar extends StatelessWidget {
                     bottomLeft: Radius.circular(10)),
                 side: BorderSide(color: Color(0xFFfef2f2))),
             onPressed: () {},
-            color: Color(0xFFfef2f2),
-            textColor: Colors.white,
             child: Container(
               padding: EdgeInsets.only(left: 5, right: 5, top: 15, bottom: 15),
               child: Text("Add to cart".toUpperCase(),
@@ -78,7 +74,7 @@ class BottomNavBar extends StatelessWidget {
                       color: Color(0xFFff665e))),
             ),
           ),
-          RaisedButton(
+          FloatingActionButton(
             elevation: 0,
             shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.only(
@@ -86,8 +82,6 @@ class BottomNavBar extends StatelessWidget {
                     bottomRight: Radius.circular(10)),
                 side: BorderSide(color: Color(0xFFff665e))),
             onPressed: () {},
-            color: Color(0xFFff665e),
-            textColor: Colors.white,
             child: Container(
               padding: EdgeInsets.only(left: 5, right: 5, top: 15, bottom: 15),
               child: Text("available at shops".toUpperCase(),
@@ -106,14 +100,15 @@ class BottomNavBar extends StatelessWidget {
 Widget createDetailView(BuildContext context, AsyncSnapshot snapshot) {
   ProductDetails values = snapshot.data;
   return DetailScreen(
-    productDetails: values,
+    UniqueKey(),
+    values,
   );
 }
 
 class DetailScreen extends StatefulWidget {
   ProductDetails productDetails;
 
-  DetailScreen({Key key, this.productDetails}) : super(key: key);
+  DetailScreen(Key key, this.productDetails) : super(key: key);
 
   @override
   _DetailScreenState createState() => _DetailScreenState();
@@ -127,18 +122,22 @@ class _DetailScreenState extends State<DetailScreen> {
         children: <Widget>[
           /*Image.network(
               widget.productDetails.data.productVariants[0].productImages[0]),*/
-          Image.network( widget.productDetails.data.productVariants[0].productImages[0],fit: BoxFit.fill,
-            loadingBuilder:(BuildContext context, Widget child,ImageChunkEvent loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Center(
-                child: CircularProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null ?
-                  loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                      : null,
-                ),
-              );
-            },
-          ),
+          // Image.network(
+          //   widget.productDetails.data.productVariants[0].productImages[0],
+          //   fit: BoxFit.fill,
+          //   loadingBuilder: (BuildContext context, Widget child,
+          //       ImageChunkEvent loadingProgress) {
+          //     if (loadingProgress == null) return child;
+          //     return Center(
+          //       child: CircularProgressIndicator(
+          //         value: loadingProgress.expectedTotalBytes != null
+          //             ? loadingProgress.cumulativeBytesLoaded /
+          //                 loadingProgress.expectedTotalBytes
+          //             : null,
+          //       ),
+          //     );
+          //   },
+          // ),
           SizedBox(
             height: 10,
           ),
@@ -287,8 +286,9 @@ class _DetailScreenState extends State<DetailScreen> {
 }
 
 Future<ProductDetails> getDetailData(String slug) async {
+  ProductDetails productDetails;
   Response response;
-  response = await get(Urls.ROOT_URL + slug);
+  response = await get(Uri(scheme: Urls.ROOT_URL + slug));
   int statusCode = response.statusCode;
   final body = json.decode(response.body);
   if (statusCode == 200) {

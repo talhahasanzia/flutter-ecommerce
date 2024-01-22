@@ -20,30 +20,30 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           children: <Widget>[
             _createDrawerHeader(),
             _createDrawerItem(
-                icon: Icons.home,
-                text: 'Home',
-                onTap: () => Navigator.push(
+               Icons.home,
+                'Home',
+              () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MyHomePage()),
                     )),
             _createDrawerItem(
-                icon: FontAwesomeIcons.user,
-                text: 'Sign In',
-                onTap: () => Navigator.push(
+               FontAwesomeIcons.user,
+               'Sign In',
+                () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => AppSignIn()),
                     )),
             _createDrawerItem(
-                icon: Icons.favorite_border,
-                text: 'Wish List',
-                onTap: () => Navigator.push(
+               Icons.favorite_border,
+               'Wish List',
+                () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => WishListScreen()),
                     )),
             _createDrawerItem(
-                icon: Icons.call,
-                text: 'Contact Us',
-                onTap: () => Navigator.push(
+               Icons.call,
+               'Contact Us',
+                () => Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => EmptyWishListScreen()),
@@ -82,7 +82,7 @@ Widget _createDrawerHeader() {
 }
 
 Widget _createDrawerItem(
-    {IconData icon, String text, GestureTapCallback onTap}) {
+    IconData icon, String text, GestureTapCallback onTap) {
   return ListTile(
     title: Row(
       children: <Widget>[

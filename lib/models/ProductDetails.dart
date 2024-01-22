@@ -1,9 +1,10 @@
+// @dart=2.11.0
 class ProductDetails {
   bool success;
   String message;
   Data data;
 
-  ProductDetails({this.success, this.message, this.data});
+  ProductDetails(this.success, this.message, this.data);
 
   ProductDetails.fromJson(Map<String, dynamic> json) {
     success = json['success'];

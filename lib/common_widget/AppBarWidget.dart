@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_app/components/AppSignIn.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-Widget appBarWidget(context) {
+PreferredSizeWidget appBarWidget(context) {
   return AppBar(
     elevation: 0.0,
     centerTitle: true,

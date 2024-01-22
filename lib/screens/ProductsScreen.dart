@@ -1,3 +1,4 @@
+// @dart=2.11.0
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class ProductsScreen extends StatefulWidget {
   String name;
   String slug;
 
-  ProductsScreen({Key key, @required this.name, @required this.slug})
+  ProductsScreen(Key key, @required this.name, @required this.slug)
       : super(key: key);
 
   @override
@@ -29,7 +30,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
           alignment: Alignment.topLeft,
           padding: EdgeInsets.only(left: 10, right: 10),
           child: ProductListWidget(
-            slug: widget.slug,
+            UniqueKey(),
+           widget.slug,
           )),
     );
   }
@@ -38,7 +40,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
 class ProductListWidget extends StatelessWidget {
   String slug;
 
-  ProductListWidget({Key key, this.slug}) : super(key: key);
+  ProductListWidget(Key key, this.slug) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,15 +62,14 @@ class ProductListWidget extends StatelessWidget {
   }
 }
 
-ProductsModels products;
+
 
 Future<ProductsModels> getProductList(String slug, bool isSubList) async {
-  if (isSubList) {
-    products = null;
-  }
-  if (products == null) {
+  ProductsModels products;
+
+
     Response response;
-    response = await get(Urls.ROOT_URL + slug);
+    response = await get(Uri(scheme: Urls.ROOT_URL + slug));
     int statusCode = response.statusCode;
     final body = json.decode(response.body);
     if (statusCode == 200) {
@@ -77,9 +78,7 @@ Future<ProductsModels> getProductList(String slug, bool isSubList) async {
     } else {
       return products = ProductsModels();
     }
-  } else {
-    return products;
-  }
+
 }
 
 Widget createListView(BuildContext context, AsyncSnapshot snapshot) {

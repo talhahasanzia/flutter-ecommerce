@@ -1,10 +1,11 @@
+// @dart=2.11.0
 class ProductsModels {
   int count;
   String next;
   Null previous;
   List<Results> results;
 
-  ProductsModels({this.count, this.next, this.previous, this.results});
+  ProductsModels(this.count, this.next, this.previous, this.results);
 
   ProductsModels.fromJson(Map<String, dynamic> json) {
     count = json['count'];

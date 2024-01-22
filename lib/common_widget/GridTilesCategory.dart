@@ -1,8 +1,10 @@
+
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_app/screens/ProductsScreen.dart';
 import 'package:flutter_ecommerce_app/screens/SubCategoryScreen.dart';
 
+// @dart=2.11.0
 class GridTilesCategory extends StatelessWidget {
   String name;
   String imageUrl;
@@ -10,11 +12,11 @@ class GridTilesCategory extends StatelessWidget {
   bool fromSubProducts = false;
 
   GridTilesCategory(
-      {Key key,
+      Key key,
       @required this.name,
       @required this.imageUrl,
       @required this.slug,
-      this.fromSubProducts})
+      this.fromSubProducts)
       : super(key: key);
 
   @override

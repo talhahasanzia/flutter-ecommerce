@@ -1,3 +1,5 @@
+// @dart=2.11.0
+
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_app/common_widget/AppBarWidget.dart';
 import 'package:flutter_ecommerce_app/components/BrandHomePage.dart';
@@ -56,7 +58,7 @@ class SubCategoryScreen extends StatelessWidget {
                     Container(
                       color: Colors.white24,
                       child: CategoryPage(
-                          slug: 'categories/?parent=' + slug, isSubList: true),
+                          UniqueKey(),'categories/?parent=' + slug),
                     ),
                     Container(
                       color: Colors.white24,

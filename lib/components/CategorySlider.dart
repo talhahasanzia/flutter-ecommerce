@@ -6,13 +6,13 @@ import 'package:flutter_ecommerce_app/common_widget/GridTilesCategory.dart';
 import 'package:flutter_ecommerce_app/utils/Urls.dart';
 import 'package:http/http.dart';
 
-List<CategoryModel> categories;
+
 
 class CategoryPage extends StatefulWidget {
   String slug;
   bool isSubList;
 
-  CategoryPage({Key key, this.slug, this.isSubList = false}) : super(key: key);
+  CategoryPage(Key key, this.slug, {this.isSubList = false}) : super(key: key);
 
   @override
   _CategoryPageState createState() => _CategoryPageState();
@@ -27,7 +27,7 @@ class _CategoryPageState extends State<CategoryPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getCategoryList(widget.slug, widget.isSubList),
+      future: getCategoryList(widget.slug),
       builder: (context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
@@ -64,26 +64,31 @@ Widget createListView(
   );
 }
 
-Future<List<CategoryModel>> getCategoryList(String slug, bool isSubList) async {
-  if (isSubList) {
-    categories = null;
-  }
-  if (categories == null) {
-    Response response;
-    response = await get(Urls.ROOT_URL + slug);
+
+Future<List<CategoryModel>?> getCategoryList(String slug) async {
+  List<CategoryModel>? categories; // Note the use of nullable List<CategoryModel>
+  Response response;
+
+  try {
+    response = await get(Uri(scheme: Urls.ROOT_URL + slug));
     int statusCode = response.statusCode;
     final body = json.decode(response.body);
+
     if (statusCode == 200) {
       categories =
           (body as List).map((i) => CategoryModel.fromJson(i)).toList();
-
-      return categories;
     } else {
-      return categories = List();
+      // If status code is not 200, you can handle the error here
+      // For now, returning null, but you may want to throw an exception or handle it differently
+      categories = null;
     }
-  } else {
-    return categories;
+  } catch (e) {
+    // Handle exceptions here
+    print("Error: $e");
+    categories = null;
   }
+
+  return categories;
 }
 
 // https://api.evaly.com.bd/core/public/categories/?parent=bags-luggage-966bc8aac     sub cate by slug

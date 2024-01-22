@@ -8,13 +8,12 @@ import 'package:flutter_ecommerce_app/models/ShopModel.dart';
 import 'package:flutter_ecommerce_app/utils/Urls.dart';
 import 'package:http/http.dart';
 
-ShopModel shopModel;
-
 class ShopHomePage extends StatefulWidget {
   String slug;
   bool isSubList;
 
-  ShopHomePage({Key key, this.slug, this.isSubList=false}) : super(key: key);
+  ShopHomePage(Key key, this.slug, {this.isSubList = false}) : super(key: key);
+
   @override
   _ShopHomePageState createState() => _ShopHomePageState();
 }
@@ -23,7 +22,7 @@ class _ShopHomePageState extends State<ShopHomePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getCategoryList(widget.slug, widget.isSubList),
+      future: getCategoryList(widget.slug),
       builder: (context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
@@ -51,27 +50,22 @@ Widget createListView(BuildContext context, AsyncSnapshot snapshot) {
       return GridTile(
           child: GridTilesCategory(
               name: results[index].shopName,
-              imageUrl: results[index].shopImage,slug:results[index].slug));
+              imageUrl: results[index].shopImage,
+              slug: results[index].slug));
     }),
   );
 }
 
-Future<ShopModel> getCategoryList(String slug, bool isSubList) async {
-  if (isSubList) {
-    shopModel = null;
-  }
-  if (shopModel == null) {
-    Response response =
-        await get(Urls.ROOT_URL + slug);
-    int statusCode = response.statusCode;
-    var body = json.decode(response.body);
-    log('${body}');
-    if (statusCode == 200) {
-      shopModel = ShopModel.fromJson(body);
+Future<ShopModel?> getCategoryList(String slug) async {
+  ShopModel shopModel;
+
+  Response response = await get(Uri(scheme: Urls.ROOT_URL + slug));
+  int statusCode = response.statusCode;
+  var body = json.decode(response.body);
+  log('${body}');
+  if (statusCode == 200) {
+    shopModel = ShopModel.fromJson(body);
 //    brandModel = (body).map((i) =>BrandModel.fromJson(body)) ;
-      return shopModel;
-    }
-  } else {
     return shopModel;
   }
 }

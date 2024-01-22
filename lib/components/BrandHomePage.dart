@@ -8,13 +8,12 @@ import 'package:http/http.dart';
 
 import '../models/BrandModel.dart';
 
-BrandModel brandModel;
 
 class BrandHomePage extends StatefulWidget {
   String slug;
   bool isSubList;
 
-  BrandHomePage({Key key, this.slug, this.isSubList=false}) : super(key: key);
+  BrandHomePage(Key key, this.slug, {this.isSubList=false}) : super(key: key);
   @override
   _BrandHomePageState createState() => _BrandHomePageState();
 }
@@ -61,20 +60,19 @@ Widget createListView(BuildContext context, AsyncSnapshot snapshot) {
   );
 }
 
-Future<BrandModel> getCategoryList(String slug, bool isSubList) async {
-  if (brandModel == null) {
-    Response response = await get(Urls.ROOT_URL + slug);
+Future<BrandModel?> getCategoryList(String slug, bool isSubList) async {
+
+  BrandModel brandModel;
+
+    Response response = await get(Uri(scheme: Urls.ROOT_URL + slug));
     int statusCode = response.statusCode;
     var body = json.decode(response.body);
     log('${body}');
     if (statusCode == 200) {
       brandModel = BrandModel.fromJson(body);
-//    brandModel = (body).map((i) =>BrandModel.fromJson(body)) ;
       return brandModel;
     }
-  } else {
-    return brandModel;
-  }
-}
 
-//https://api.evaly.com.bd/core/public/brands/?limit=20&page=1&category=bags-luggage-966bc8aac
+
+    return null;
+}
